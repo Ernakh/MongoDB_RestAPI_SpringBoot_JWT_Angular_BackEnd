@@ -32,7 +32,19 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf().disable()
+        http
+            .cors() // Habilita CORS
+            .and()
+            .csrf().disable()
+            .authorizeHttpRequests()
+            .anyRequest().permitAll();
+        return http.build();
+    }
+}
+
+    /*@Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.cors().and().csrf().disable()
             .authorizeHttpRequests()
             .requestMatchers("/auth/**").permitAll()
             .anyRequest().authenticated()
@@ -41,8 +53,8 @@ public class SecurityConfig {
 
         http.addFilterBefore(new JwtFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
         return http.build();
-    }
-}
+    }*/
+
 
 class JwtFilter extends BasicAuthenticationFilter {
 
